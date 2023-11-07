@@ -33,3 +33,7 @@ The following resources helped me prepare and **PASS** the newest AWS Certified 
 - My Internship as Platform engineer intern at [Nextails Labs](https://nextail.co/)
 - [Udemy course by Stéphane Maarek](https://www.udemy.com/course/aws-certified-cloud-practitioner-new/)
 - [Practice exams by Stéphane Maarek](https://www.udemy.com/course/practice-exams-aws-certified-cloud-practitioner/)
+
+### Resume as HTML
+
+The resume needs to be written in plane HTML. Not a Word doc, not a PDF.
