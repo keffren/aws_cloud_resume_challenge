@@ -42,3 +42,17 @@ The resume needs to be written in plane HTML. Not a Word doc, not a PDF.
 
 The resume needs to be styled with CSS. It doesn’t have to be fancy.
 To apply style to the plain HTML, I have used a [template](https://github.com/StartBootstrap/startbootstrap-resume) which is created by [Start Bootstrap](https://startbootstrap.com/).
+
+### 4. Static WebSite
+
+The HTML resume should be deployed online as an Amazon S3 static website.
+
+One of the advanced challenge steps is Step **12: Infrastructure as Code (IaC)** This means deploying the project infrastructure and AWS services as IaC. To accomplish this, I will start from the beginning by deploying the project as Infrastructure as Code using **Terraform**, which is one of the most commonly-used IaC tools in the industry.
+
+To achieve it, it was helpful the next guides:
+
+- [Tutorial: Configuring a static website on Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/HostingWebsiteOnS3Setup.html)
+- [AWS Provide of Terraform](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
+
+> [!IMPORTANT]
+> The user who was configured on AWS CLI is not the root user! It is another user with admin privileges and MFA enabled.
