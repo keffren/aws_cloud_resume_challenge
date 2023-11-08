@@ -24,7 +24,7 @@ The general format:
 - **MINOR version** when you add functionality in a backward compatible manner
 - **PATCH version** when you make backward compatible bug fixes
 
-###  AWS Cloud Practitioner certificate
+### 1. AWS Cloud Practitioner certificate
 
 The AWS Cloud Practitioner certificate is the first requirement to complete this challenge.
 
@@ -34,6 +34,11 @@ The following resources helped me prepare and **PASS** the newest AWS Certified 
 - [Udemy course by Stéphane Maarek](https://www.udemy.com/course/aws-certified-cloud-practitioner-new/)
 - [Practice exams by Stéphane Maarek](https://www.udemy.com/course/practice-exams-aws-certified-cloud-practitioner/)
 
-### Resume as HTML
+### 2. Resume as HTML
 
 The resume needs to be written in plane HTML. Not a Word doc, not a PDF.
+
+### 3. CSS
+
+The resume needs to be styled with CSS. It doesn’t have to be fancy.
+To apply style to the plain HTML, I have used a [template](https://github.com/StartBootstrap/startbootstrap-resume) which is created by [Start Bootstrap](https://startbootstrap.com/).
