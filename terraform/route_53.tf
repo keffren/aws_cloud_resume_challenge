@@ -9,7 +9,7 @@ resource "aws_route53_zone" "public_hz" {
     }
 }
 
-#Create Records: custom domains -> CloudFron endpoint
+#Create Records: custom domains -> CloudFront endpoint
 resource "aws_route53_record" "mateodev_domain" {
     zone_id = aws_route53_zone.public_hz.id
     name    = "mateodev.cloud"

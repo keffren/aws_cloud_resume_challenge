@@ -91,13 +91,18 @@ Also, CloudFront has a custom SSL certificate, instead of its default.
     - A hosted zone tells Route 53 how to respond to DNS queries for a domain such as `example.com`.
     - When a hosted zone is attached to a VPC, it means the hosted zone is private.
 1. Import SSL certificate to CloudFront
+
     > [!IMPORTANT]
     > The ACM certificate must to be in US East.
+
     - This documentation is very helpful: [Importing an SSL/TLS certificate to CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cnames-and-https-procedures.html#cnames-and-https-uploading-certificates)
     - If the `aws_cloudfront_distribution` resource use an ACM certificate, it **must have these two arguments declared**:
         - `ssl_support_method`
         - `minimum_protocol_version`
+        
 1. Create DNS Record of type A
+
     - This DNS Record is an **Alias record** that routes traffic to an AWS resource, CloudFront.
     - If the domain is not provided by Amazon, its `Nameservers`  have to point to the `Nameservers` of the Hosted Zone created below. In my case, my domain is provided by *goDaddy*.
+    - Alternatively, you can add the DNS record to the third-party domain provider, which will be easier to set up
     
