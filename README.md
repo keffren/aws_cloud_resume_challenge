@@ -56,3 +56,25 @@ To achieve it, it was helpful the next guides:
 
 > [!IMPORTANT]
 > The user who was configured on AWS CLI is not the root user! It is another user with admin privileges and MFA enabled.
+
+### 5. HTTPS
+
+The S3 website URL should use **HTTPS** for security which is one of the features of **Amazon CloudFront**.
+
+**What is Amazon CloudFront?**
+Amazon CloudFront is a content delivery network (CDN) service built for high performance, security, and developer convenience. It delivers the content through a worldwide network of data centers called edge locations.
+
+I have added a restriction location to the CloudFront distribution: a geographic whitelist for United Kingdom (GB) and Spain (ES).
+
+The static website endpoint, created using CloudFormation, is composed of : 
+- `CloudFront Distribution domain name` + `index.hml`
+
+Therefore, the endpoint for my resume is : https://d1fntmxjlhuwfd.cloudfront.net/index.html
+
+Lastly, the following guides and documentation helped me perform this step:
+
+- [Amazon CLoudFront documentation](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/GettingStarted.SimpleDistribution.html)
+- [CloudFront resource terraform doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution#viewer-certificate-arguments)
+- [Create a CloudFront distribution](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/GettingStartedCreateDistribution.html)
+- [List of ISO 3166 country codes](https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes)
+- [Values that you specify when you create or update a distribution](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/distribution-web-values-specify.html#DownloadDistValuesForwardCookies)
