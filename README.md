@@ -78,3 +78,26 @@ Lastly, the following guides and documentation helped me perform this step:
 - [Create a CloudFront distribution](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/GettingStartedCreateDistribution.html)
 - [List of ISO 3166 country codes](https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes)
 - [Values that you specify when you create or update a distribution](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/distribution-web-values-specify.html#DownloadDistValuesForwardCookies)
+
+### 6. DNS
+
+At this point, Internet users can now access my static website via the website endpoint defined in the previous step. However, I want users to access my site through a custom domain like` www.mateodev.cloud`.
+
+To achieve this, I must set up a custom domain. First, I need to create a DNS zone that will contain a CNAME record forwarding traffic from `www.mateodev.cloud` to my website endpoint. Since my static website is hosted on AWS, I can use **AWS Route 53** as my domain’s DNS provider.
+
+Also, CloudFront has a custom SSL certificate, instead of its default.
+
+1. Create a hosted zone on Route-53
+    - A hosted zone tells Route 53 how to respond to DNS queries for a domain such as `example.com`.
+    - When a hosted zone is attached to a VPC, it means the hosted zone is private.
+1. Import SSL certificate to CloudFront
+    > [!IMPORTANT]
+    > The ACM certificate must to be in US East.
+    - This documentation is very helpful: [Importing an SSL/TLS certificate to CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cnames-and-https-procedures.html#cnames-and-https-uploading-certificates)
+    - If the `aws_cloudfront_distribution` resource use an ACM certificate, it **must have these two arguments declared**:
+        - `ssl_support_method`
+        - `minimum_protocol_version`
+1. Create DNS Record of type A
+    - This DNS Record is an **Alias record** that routes traffic to an AWS resource, CloudFront.
+    - If the domain is not provided by Amazon, its `Nameservers`  have to point to the `Nameservers` of the Hosted Zone created below. In my case, my domain is provided by *goDaddy*.
+    

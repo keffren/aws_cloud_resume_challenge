@@ -1,5 +1,14 @@
+# Retrieve the arn certificate of mateodev.cloud
+data "aws_secretsmanager_secret" "mateodev_cert" {
+    name = "acm/mateodev"
+}
+data "aws_secretsmanager_secret_version" "mateodev_cert_secret" {
+    secret_id     = data.aws_secretsmanager_secret.mateodev_cert.arn
+}
+
 locals {
     s3_origin_id = "static-resume-site-distribution"
+    mateodev_cert_arn = jsondecode(data.aws_secretsmanager_secret_version.mateodev_cert_secret.secret_string)["mateodev_certificate_arn"]
 }
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
@@ -12,6 +21,8 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     enabled             = true
     comment             = "enable HTTPS"
     default_root_object = "index.html"
+
+    aliases = [ "mateodev.cloud"]
 
     default_cache_behavior {
         allowed_methods  = ["GET", "HEAD"]
@@ -28,7 +39,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
             }
         }
 
-        viewer_protocol_policy = "allow-all"
+        viewer_protocol_policy = "redirect-to-https"
     }
 
     restrictions {
@@ -40,7 +51,11 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
     # The SSL configuration for this distribution (maximum one)
     viewer_certificate {
-        cloudfront_default_certificate = true
+        #cloudfront_default_certificate = true
+        acm_certificate_arn = local.mateodev_cert_arn
+
+        ssl_support_method = "sni-only"
+        minimum_protocol_version = "TLSv1.2_2021"
     }
 
     tags = {
