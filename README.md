@@ -81,9 +81,9 @@ Lastly, the following guides and documentation helped me perform this step:
 
 ### 6. DNS
 
-At this point, Internet users can now access my static website via the website endpoint defined in the previous step. However, I want users to access my site through a custom domain like` www.mateodev.cloud`.
+At this point, Internet users can now access my static website via the website endpoint defined in the previous step. However, I want users to access my site through a custom domain like` https://mateodev.cloud/`.
 
-To achieve this, I must set up a custom domain. First, I need to create a DNS zone that will contain a CNAME record forwarding traffic from `www.mateodev.cloud` to my website endpoint. Since my static website is hosted on AWS, I can use **AWS Route 53** as my domain’s DNS provider.
+To achieve this, I must set up a custom domain. First, I need to create a DNS zone that will contain a Alias record forwarding traffic from `https://mateodev.cloud/` to my website endpoint. Since my static website is hosted on AWS, I can use **AWS Route 53** as my domain’s DNS provider.
 
 Also, CloudFront has a custom SSL certificate, instead of its default.
 
@@ -104,7 +104,7 @@ Also, CloudFront has a custom SSL certificate, instead of its default.
 
     - This DNS Record is an **Alias record** that routes traffic to an AWS resource, CloudFront.
     - If the domain is not provided by Amazon, its `Nameservers`  have to point to the `Nameservers` of the Hosted Zone created below. In my case, my domain is provided by *goDaddy*.
-    - Alternatively, you can add the DNS record to the third-party domain provider, which will be easier to set up
+    - Alternatively, you can add the DNS record to the third-party domain provider, which will be easier to set up without extra cost.
 
 ### 7. JavaScript
 
