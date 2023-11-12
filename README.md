@@ -99,10 +99,23 @@ Also, CloudFront has a custom SSL certificate, instead of its default.
     - If the `aws_cloudfront_distribution` resource use an ACM certificate, it **must have these two arguments declared**:
         - `ssl_support_method`
         - `minimum_protocol_version`
-        
+
 1. Create DNS Record of type A
 
     - This DNS Record is an **Alias record** that routes traffic to an AWS resource, CloudFront.
     - If the domain is not provided by Amazon, its `Nameservers`  have to point to the `Nameservers` of the Hosted Zone created below. In my case, my domain is provided by *goDaddy*.
     - Alternatively, you can add the DNS record to the third-party domain provider, which will be easier to set up
+
+### 7. JavaScript
+
+The resume webpage should include a visitor counter that displays how many people have accessed the site. This visitor counter needs a bit of JavaScript.
+
+This step has two solutions:
+
+1. Local Solution:
+
+    - This solution only works locally because the scripts use `localStorage` method to store the data counter.
+    - It is not the right solution because each user will have their own counter.
+    - The purpose of doing this using user data is to refresh my knowledge of JavaScript and CSS.
     
+2. Proper solution using DynamoDB (**Work in Progress - WIP**)

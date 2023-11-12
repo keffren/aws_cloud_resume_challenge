@@ -10946,6 +10946,24 @@ p.lead {
   background-color: #bd5d38;
 }
 
+.counter-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 3.5rem;
+  width: 10rem;
+  background-color: #495057;
+  color: #fff;
+  font-size: 1.5rem;
+  margin-right: 1.5rem;
+}
+
+.counter-box .counter-value{
+  margin-left: 1.5rem;
+  font-size: 2.4rem;
+  color: #bd5d38;
+}
+
 .dev-icons {
   font-size: 3rem;
 }
