@@ -125,3 +125,22 @@ This step has two solutions:
 The visitor counter will need to retrieve and update its count in a database somewhere. For this, It's recommended to use **Amazon DynamoDB**, which is a fully managed, serverless, key-value NoSQL database designed to run high-performance applications at any scale.
 
 > **DynamoDB is a schema-less database**, meaning you do not need to define all the attributes. This [stack overflow answer](https://stackoverflow.com/a/50014381) helps to understand the attribute terraform block. 
+
+> [!IMPORTANT]
+> By default, Terraform detects any differences in the current settings of a real infrastructure object and plans to update the remote object to match the configuration. If the visitor count value changes from the Terraform value declared, Terraform will update it. Therefore, it needs a `lifecycle` with the `ignore_changes` argument to avoid that behavior.
+
+### 9. Python
+
+It is necessary to create a few services that will interact with DynamoDB. These services are:
+
+- **GetVisitorsCount**: Retrieves the count of views.
+- **UpdateVisitorsCount**: Updates the count of views.
+
+They are the core of the API and are implemented through AWS Lambda functions in the Python programming language.
+
+Both services need permissions to access the database and create logs. Therefore, they have to assume a role created within the `iam.tf` file.
+
+Lastly, the following guides are helpful for retrieve and update data from DynamoDB through the AWS SDK: Boto3.
+
+- [Inserting and Retrieving Data](https://aws.amazon.com/tutorials/create-manage-nonrelational-database-dynamodb/#:~:text=the%20application%20background.-,Inserting%20and%20Retrieving%20Data,-(15%20minutes)%3A%20Walk)
+- [Updating Items](https://aws.amazon.com/tutorials/create-manage-nonrelational-database-dynamodb/#:~:text=call%20with%20DynamoDB.-,Updating%20Items,-(15%20minutes)%3A%20Use)

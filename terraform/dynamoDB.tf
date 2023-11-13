@@ -32,4 +32,7 @@ resource "aws_dynamodb_table_item" "example" {
   }
   ITEM
   
+  lifecycle {
+    ignore_changes = all
+  }
 }
