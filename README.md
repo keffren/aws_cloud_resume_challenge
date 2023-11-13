@@ -119,3 +119,9 @@ This step has two solutions:
     - The purpose of doing this using user data is to refresh my knowledge of JavaScript and CSS.
     
 2. Proper solution using DynamoDB (**Work in Progress - WIP**)
+
+### 8. DataBase
+
+The visitor counter will need to retrieve and update its count in a database somewhere. For this I'll use **Amazon DynamoDB**, which is a fully managed, serverless, key-value NoSQL database designed to run high-performance applications at any scale.
+
+> **DynamoDB is a schema-less database**, meaning you do not need to define all the attributes. This [stack overflow answer](https://stackoverflow.com/a/50014381) helps to understand the attribute terraform block. 
