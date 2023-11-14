@@ -4,7 +4,7 @@ def updateVisitorsCount_handler(event, context):
     
     #Connect to DynamoDB and retrieve the item
     dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
-    table_name = event["table_name"]
+    table_name = "resume-challenge-counter"
     table = dynamodb.Table(table_name)
     
     #Increment the counter

@@ -144,3 +144,25 @@ Lastly, the following guides are helpful for retrieve and update data from Dynam
 
 - [Inserting and Retrieving Data](https://aws.amazon.com/tutorials/create-manage-nonrelational-database-dynamodb/#:~:text=the%20application%20background.-,Inserting%20and%20Retrieving%20Data,-(15%20minutes)%3A%20Walk)
 - [Updating Items](https://aws.amazon.com/tutorials/create-manage-nonrelational-database-dynamodb/#:~:text=call%20with%20DynamoDB.-,Updating%20Items,-(15%20minutes)%3A%20Use)
+
+### 10. API
+
+Creating an API is necessary to handle requests from the static website and communicate with the database. This prevents direct communication between the JavaScript code and DynamoDB.
+
+To achieve this, I utilize AWS API Gateway and Lambda services, which are practically free of charge.
+
+> What is the difference between `API GateWay` and `API GateWay V2`? This [stack overflow answer](https://stackoverflow.com/a/72409509) explains it.
+
+Every API Gateway resource consists of four components:
+
+    ![](/resources/api_gateway_resoirce_methods.png)
+
+- Method request
+- Integration Request
+    - `integration_http_method = "POST"`, no matters If it is a GET method. [Here](https://stackoverflow.com/a/41389858) explains the reason.
+- Integration Response
+    - Add resource dependency to `aws_api_gateway_integration_response` resource
+- Method Response
+
+> [!IMPORTANT]
+> Grant lambda function permissions to API GateWay
