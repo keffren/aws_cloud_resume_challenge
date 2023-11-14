@@ -8,7 +8,7 @@ def updateVisitorsCount_handler(event, context):
     table = dynamodb.Table(table_name)
     
     #Increment the counter
-    count = event["updateItem"]
+    count = event["currentCount"]
     count += 1
     
     #Update the DB
