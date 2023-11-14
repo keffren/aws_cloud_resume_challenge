@@ -28,6 +28,6 @@ def updateVisitorsCount_handler(event, context):
     )
     
     #Return request status
-    res = request["ResponseMetadata"]["HTTPStatusCode"]
+    resp = request["ResponseMetadata"]
 
-    return res
+    return resp

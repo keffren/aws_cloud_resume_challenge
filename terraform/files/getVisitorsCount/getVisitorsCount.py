@@ -1,3 +1,4 @@
+import json
 import boto3
 
 def getVisitorsCount_handler(event, context):
@@ -12,6 +13,10 @@ def getVisitorsCount_handler(event, context):
     #Get the counter value
     counter_value = item["Item"]["visitorsNumber"]
     
-    #print(counter_value)
-    
-    return counter_value
+    return {
+        "statusCode": 200,
+        "headers": {
+            "Content-Type": "application/json",
+        },
+        "body": json.dumps(counter_value)
+    }
