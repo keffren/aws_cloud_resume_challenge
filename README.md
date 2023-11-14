@@ -108,17 +108,42 @@ Also, CloudFront has a custom SSL certificate, instead of its default.
 
 ### 7. JavaScript
 
-The resume webpage should include a visitor counter that displays how many people have accessed the site. This visitor counter needs a bit of JavaScript.
+<details>
+<summary>The resume webpage should include a visitor counter that displays how many people have accessed the site. This visitor counter needs a bit of JavaScript.</summary>
 
 This step has two solutions:
 
 1. Local Solution:
 
+    ```
+    //Retrieve the views
+    let views = getViews();
+    document.getElementById("views-counter").innerHTML = views;
+
+    //Increment and store the counter
+    views++;
+    localStorage.setItem("views-counter", views);
+
+    function getViews(){
+
+        let views = localStorage.getItem("views-counter");
+
+        if(views === null){
+            views = 1;
+            localStorage.setItem("views-counter", views);
+        }else{
+            views = localStorage.getItem("views-counter");
+        };
+
+        return views;
+    };
+    ```
     - This solution only works locally because the scripts use `localStorage` method to store the data counter.
     - It is not the right solution because each user will have their own counter.
     - The purpose of doing this using user data is to refresh my knowledge of JavaScript and CSS.
     
 2. Proper solution using DynamoDB (**Work in Progress - WIP**)
+</details>
 
 ### 8. DataBase
 

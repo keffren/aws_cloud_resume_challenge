@@ -109,3 +109,23 @@ resource "aws_lambda_permission" "apigw_invoke_update_lambda" {
     principal     = "apigateway.amazonaws.com"
     source_arn    = "${aws_api_gateway_rest_api.resume_challenge_api.execution_arn}/*/*/*"
 }
+
+# Deploy the API
+resource "aws_api_gateway_deployment" "deployment" {
+    rest_api_id = aws_api_gateway_rest_api.resume_challenge_api.id
+
+    lifecycle {
+        create_before_destroy = true
+    }
+
+    depends_on = [ 
+        aws_api_gateway_integration.get_integration_request,
+        aws_api_gateway_integration.post_integration_request
+    ]
+}
+
+resource "aws_api_gateway_stage" "api_stage" {
+    deployment_id = aws_api_gateway_deployment.deployment.id
+    rest_api_id   = aws_api_gateway_rest_api.resume_challenge_api.id
+    stage_name    = "dev"
+}
