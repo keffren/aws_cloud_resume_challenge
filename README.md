@@ -155,7 +155,8 @@ To achieve this, I utilize AWS API Gateway and Lambda services, which are practi
 
 Every API Gateway resource consists of four components:
 
-    ![](/resources/api_gateway_resoirce_methods.png)
+![](/resources/api_gateway_resource_methods.png)
+
 
 - Method request
 - Integration Request
