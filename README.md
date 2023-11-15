@@ -142,7 +142,9 @@ This step has two solutions:
     - It is not the right solution because each user will have their own counter.
     - The purpose of doing this using user data is to refresh my knowledge of JavaScript and CSS.
     
-2. Proper solution using DynamoDB (**Work in Progress - WIP**)
+2. Proper solution using DynamoDB
+    - [views_counter_script.js](/front-end/js/views_counter_script.js)
+    
 </details>
 
 ### 8. DataBase
@@ -182,7 +184,6 @@ Every API Gateway resource consists of four components:
 
 ![](/resources/api_gateway_resource_methods.png)
 
-
 - Method request
 - Integration Request
     - `integration_http_method = "POST"`, no matters If it is a GET method. [Here](https://stackoverflow.com/a/41389858) explains the reason.
@@ -191,4 +192,4 @@ Every API Gateway resource consists of four components:
 - Method Response
 
 > [!IMPORTANT]
-> Grant lambda function permissions to API GateWay
+> Grant lambda function permissions to API GateWay and [Enabled CORS](https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-cors.html#apigateway-enable-cors-non-simple)
