@@ -4,7 +4,7 @@ Welcome to my AWS Cloud Resume Challenge repository! This project is the culmina
 
 ## What is the AWS Cloud Resume Challenge?
 
-The AWS Cloud Resume Challenge is not an official Amazon Web Services (AWS) program but rather a community-driven initiative designed to help individuals enhance their cloud computing skills and create a notable project to add to their resume. 
+The [AWS Cloud Resume Challenge](https://cloudresumechallenge.dev/docs/the-challenge/aws/) is not an official Amazon Web Services (AWS) program but rather a community-driven initiative designed to help individuals enhance their cloud computing skills and create a notable project to add to their resume. 
 
 It was created by [Forrest Brazeal](https://forrestbrazeal.com/), to encourage practical learning and showcase one's AWS expertise to potential employers.
 
@@ -193,3 +193,7 @@ Every API Gateway resource consists of four components:
 
 > [!IMPORTANT]
 > Grant lambda function permissions to API GateWay and [Enabled CORS](https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-cors.html#apigateway-enable-cors-non-simple)
+
+### 11. Tests
+
+It should also include some tests for the Python code (Lambda Functions). In [this tutorial](https://realpython.com/python-testing/), teach how to create a basic test, execute it, and find the bugs before your users do. 
