@@ -197,3 +197,7 @@ Every API Gateway resource consists of four components:
 ### 11. Tests
 
 It should also include some tests for the Python code (Lambda Functions). In [this tutorial](https://realpython.com/python-testing/), teach how to create a basic test, execute it, and find the bugs before your users do. 
+
+### 12. Infrastructure as Code
+
+During the initial steps, as I commented earlier, I configured a Terraform environment to execute Infrastructure as Code (IaC).
