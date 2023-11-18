@@ -11,3 +11,13 @@ terraform {
 provider "aws" {
   region = "eu-west-1"
 }
+
+
+# Retrieve the AWS account number
+# To Avoid hardcode it
+data "aws_caller_identity" "current" {}
+
+locals {
+  aws_account_number = data.aws_caller_identity.current.account_id
+}
+

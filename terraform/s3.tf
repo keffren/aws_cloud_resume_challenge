@@ -1,4 +1,4 @@
-# Create S3 bucket
+######################################  STATIC WEBSITE BUCKET
 resource "aws_s3_bucket" "static_website" {
   bucket = "mateodev.cloud"
 
@@ -51,4 +51,15 @@ resource "aws_s3_bucket_policy" "allow_public_access" {
     EOF
 
     depends_on = [ aws_s3_bucket_public_access_block.allow_public_access]
+}
+
+###################################### CODEPIPELINE BUCKET
+resource "aws_s3_bucket" "backend_pipeline_bucket" {
+  bucket = "resume-challenge-backend-pipeline"
+
+  tags = {
+    Name = "CodePipeLine-bucket"
+    Project = "aws-cloud-resume-challenge"
+    Terraform = "true"
+  }
 }
