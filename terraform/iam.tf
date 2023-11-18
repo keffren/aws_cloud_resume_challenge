@@ -168,3 +168,79 @@ resource "aws_iam_role_policy" "attach_policy_codebuild_role" {
   role   = aws_iam_role.custom_codebuild_service_role.name
   policy = data.aws_iam_policy_document.codebuild_service.json
 }
+
+######################################   CODEPIPELINE ROLE
+data "aws_iam_policy_document" "codepipeline_assume_role" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["codepipeline.amazonaws.com"]
+    }
+
+    actions = ["sts:AssumeRole"]
+  }
+}
+
+resource "aws_iam_role" "custom_codepipeline_service_role" {
+    name               = "custom-codepipeline-service-role"
+    assume_role_policy = data.aws_iam_policy_document.codepipeline_assume_role.json
+
+    tags = {
+        Name = "codepipeline-service-role"
+        Project = "aws-cloud-resume-challenge"
+        Terraform = "true"
+    }
+}
+
+data "aws_iam_policy_document" "codepipeline_service" {
+    statement {
+        effect = "Allow"
+
+        actions = [
+            "s3:GetObject",
+            "s3:GetObjectVersion",
+            "s3:GetBucketVersioning",
+            "s3:PutObjectAcl",
+            "s3:PutObject",
+        ]
+
+        resources = [
+            aws_s3_bucket.backend_pipeline_bucket.arn,
+            "${aws_s3_bucket.backend_pipeline_bucket.arn}/*"
+        ]
+    }
+
+    statement {
+        effect = "Allow"
+
+        actions = [
+            "codebuild:BatchGetBuilds",
+            "codebuild:StartBuild",
+        ]
+
+        resources = ["*"]
+    }
+
+    statement {
+        effect = "Allow"
+
+        actions = [
+            "cloudwatch:*",
+            "sns:*",
+            "cloudformation:*",
+            "rds:*",
+            "sqs:*",
+            "lambda:*"
+        ]
+
+        resources = ["*"]             
+    }
+}
+
+resource "aws_iam_role_policy" "attach_policy_codepipeline_role" {
+    name   = "attach-policy-with-codepipeline_role"
+    role   = aws_iam_role.custom_codepipeline_service_role.name
+    policy = data.aws_iam_policy_document.codepipeline_service.json
+}
