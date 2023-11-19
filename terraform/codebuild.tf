@@ -30,17 +30,25 @@ resource "aws_codebuild_project" "cicd_build_stage" {
                 commands:
                     - python3 -m pip install boto3
                     - python3 -m pip install --upgrade awscli
-        build:
-            commands:
-                - echo "Configuring AWS-CLI"
-                - aws configure set region $AWS_DEFAULT_REGION
-                - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-                - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-                - echo "Running unit tests"
-                - python3 -m unittest tests/unit_tests.py
+            build:
+                commands:
+                    - echo "Configuring AWS-CLI"
+                    - aws configure set region $AWS_DEFAULT_REGION
+                    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+                    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+                    - echo "Running unit tests"
+                    - python3 -m unittest tests/unit_tests.py
+                    - echo "Ziping Lambdas code"
+                    - zip getVisitorsCount.zip getVisitorsCount.py
+                    - zip updateVisitorsCount.zip updateVisitorsCount.py
+            post_build:
+                commands:
+                    - echo "Updating Lambda functions"
+                    - aws lambda update-function-code --function-name  ${aws_lambda_function.getVisitorsCount_function.function_name} --zip-file fileb://getVisitorsCount.zip --region eu-west-1
+                    - aws lambda update-function-code --function-name  ${aws_lambda_function.updateVisitorsCount_function.function_name} --zip-file fileb://updateVisitorsCount.zip --region eu-west-1
         artifacts:
             files:
-                - '**/*'
+                 - '**/*'
     EOF
 
         git_submodules_config {
@@ -63,7 +71,8 @@ resource "aws_codebuild_project" "cicd_build_stage" {
 
     logs_config {
         cloudwatch_logs {
-            status = "DISABLED"
+            group_name  = "codebuild_buildspec"
+            stream_name = "log-stream-codebuild"
         }
         s3_logs {
             status = "DISABLED"

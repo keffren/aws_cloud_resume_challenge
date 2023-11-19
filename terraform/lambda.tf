@@ -6,18 +6,19 @@ data "archive_file" "getVisitorsCount_zip" {
 }
 
 resource "aws_lambda_function" "getVisitorsCount_function" {
-    filename      = "${path.module}/files/getVisitorsCount/init.zip"
-    function_name = "getVisitorsCount"
-    role          = aws_iam_role.lambda_service.arn
-    handler       = "getVisitorsCount.getVisitorsCount_handler"
+  filename      = "${path.module}/files/getVisitorsCount/init.zip"
 
-    runtime = "python3.11"
+  function_name = "getVisitorsCount"
+  role          = aws_iam_role.lambda_service.arn
+  handler       = "getVisitorsCount.getVisitorsCount_handler"
 
-    tags = {
-        Name = "getVisitorsCount-function"
-        Project = "aws-cloud-resume-challenge"
-        Terraform = "true"
-    }
+  runtime = "python3.11"
+
+  tags = {
+    Name = "getVisitorsCount-function"
+    Project = "aws-cloud-resume-challenge"
+    Terraform = "true"
+  }
 }
 
 # updateVisitorsCount LAMBDA FUNCTION

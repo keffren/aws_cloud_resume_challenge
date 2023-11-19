@@ -51,7 +51,21 @@ resource "aws_iam_policy" "lambda_permissions" {
             {
                 "Effect": "Allow",
                 "Action": "dynamoDB:*",
-                "Resource": "arn:aws:dynamodb:eu-west-1:${local.aws_account_number}:table/resume-challenge-counter"
+                "Resource": "${aws_dynamodb_table.visitor_counter.arn}"
+            },
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "s3:PutObject",
+                    "s3:GetObject",
+                    "s3:GetObjectVersion",
+                    "s3:GetBucketAcl",
+                    "s3:GetBucketLocation"
+                ],
+                "Resource": [
+                    "${aws_s3_bucket.backend_pipeline_bucket.arn}",
+                    "${aws_s3_bucket.backend_pipeline_bucket.arn}/*",
+                ]
             }
         ]
     })
@@ -162,6 +176,15 @@ data "aws_iam_policy_document" "codebuild_service" {
     actions = ["secretsmanager:GetSecretValue"]
     resources = ["${data.aws_secretsmanager_secret.access_key.arn}"]
   }
+
+  statement {
+    effect = "Allow"
+    actions = ["lambda:*"]
+    resources = [
+        "${aws_lambda_function.getVisitorsCount_function.arn}",
+        "${aws_lambda_function.updateVisitorsCount_function.arn}"
+    ]
+  }
 }
 
 resource "aws_iam_role_policy" "attach_policy_codebuild_role" {
@@ -231,8 +254,7 @@ data "aws_iam_policy_document" "codepipeline_service" {
             "sns:*",
             "cloudformation:*",
             "rds:*",
-            "sqs:*",
-            "lambda:*"
+            "sqs:*"
         ]
 
         resources = ["*"]             

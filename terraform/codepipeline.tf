@@ -23,7 +23,7 @@ locals {
 
 # CICD PIPELINE
 resource "aws_codepipeline" "backend_pipeline" {
-    name     = "CICD-Resume-Challenge-BackEnd"
+    name     = "CICD-Resume-BackEnd"
     role_arn = aws_iam_role.custom_codepipeline_service_role.arn
 
     artifact_store {
@@ -63,7 +63,7 @@ resource "aws_codepipeline" "backend_pipeline" {
             region           = "eu-west-1"
 
             input_artifacts  = ["source_output"]
-            output_artifacts = ["build_output"]
+            #output_artifacts = ["build_output"]
             version          = "1"
 
             configuration = {
@@ -71,14 +71,13 @@ resource "aws_codepipeline" "backend_pipeline" {
             }
         }
     }
-
+    
     tags = {
-        Name = "CICD-Resume-Challenge-BackEnd"
+        Name = "CICD-Resume-BackEnd"
         Project = "aws-cloud-resume-challenge"
         Terraform = "true"
     }
 }
-
 
 resource "aws_codepipeline_webhook" "github_webhook_integration" {
     name            = "resume-challenge-backend-webhook"
@@ -93,11 +92,5 @@ resource "aws_codepipeline_webhook" "github_webhook_integration" {
     filter {
         json_path    = "$.ref"
         match_equals = "refs/heads/main"
-    }
-
-    tags = {
-        Name = "resume-challenge-backend-webhook"
-        Project = "aws-cloud-resume-challenge"
-        Terraform = "true"
     }
 }
