@@ -11,6 +11,7 @@ locals {
     mateodev_cert_arn = jsondecode(data.aws_secretsmanager_secret_version.mateodev_cert_secret.secret_string)["mateodev_certificate_arn"]
 }
 
+# INTEGRATE CLOUDFRONT
 resource "aws_cloudfront_distribution" "s3_distribution" {
 
     origin {
@@ -44,8 +45,8 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
     restrictions {
         geo_restriction {
-            restriction_type = "whitelist"
-            locations        = ["GB", "ES"]
+            restriction_type = "none"
+            locations        = []
         }
     }
 
