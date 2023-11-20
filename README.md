@@ -201,3 +201,62 @@ It should also include some tests for the Python code (Lambda Functions). In [th
 ### 12. Infrastructure as Code
 
 During the initial steps, as I commented earlier, I configured a Terraform environment to execute Infrastructure as Code (IaC).
+
+### 13. Source Control
+
+A good practice is to avoid updating the back-end API and the front-end website by making calls from the laptop. It's better to update them automatically whenever you make a change to the code. This concept is known as **continuous integration and deployment (CI/CD)**.
+
+To achieve this, the project will be split in two repositories:
+
+- [The back-end](https://github.com/keffren/resume_challenge_backend)
+- [The front-end]()
+
+### 14. CI/CD Back-end
+
+In this step, I am setting up a CI/CD pipeline to upload Python code into the Lambda functions using **AWS CodePipeline**, deviating from the challenge's recommendation. For the front-end, I will use GitHub Actions.
+
+The CI/CD pipeline is composed by the following stages:
+
+- **Source:**
+    - I am utilizing GitHub as our version control system. Whenever there is a code change in the GitHub repository, CodePipeline fetches the latest changes using a webhook integrated.
+    - What is the PayloadURL of the Github WebHook? It is the CodePipeline endpoint that can be retrieved in Terraform using the following: `aws_codepipeline_webhook.github_webhook_integration.url`.
+    - The content type of the Webhook should be `application/json`
+
+- **Build:**
+    - **CodeBuild** proceeds to install the necessary dependencies and run tests. Upon successful installation and test execution, it updates the lambda functions using the source control artifacts (stored in S3).
+    - *CodeBuild notes*:
+        - It needs a subnet
+        - It needs an IAM service role
+        - To run the latest boto3 version, it needs at least Python 3.8. The CodeBuild project has configured `amazonlinux2 standard 5.0`
+        - [CodeBuild artifacs?](https://stackoverflow.com/questions/72132661/aws-codepipeline-multiple-output-artifacts)
+        - https://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html#build-spec.artifacts.name
+        - [CodeBuild Buildspec syntax?](https://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html#build-spec-ref-syntax)
+        - How to generate multiple artifacts?
+            <details>
+            ```
+            artifacts:
+                    files:
+                        - '**/*'
+                    secondary-artifacts:
+                        ArtifactGet:
+                            files:
+                                - 'getVisitorsCount.py'
+                            name: ArtifactGet
+                        ArtifactUpdate:
+                            files:
+                                - 'updateVisitorsCount.py'
+                            name: ArtifactUpdate
+            ```
+
+            ```
+            stage {
+                name = "DeployAction"
+                action {
+                    ... 
+                    input_artifacts = ["ArtifactGet"]    
+                }       
+            }
+            ```
+            </details>
+
+> This CodePipeline uses GitHub version 1 which is deprecated. As extra, I may update it to [v2](https://docs.aws.amazon.com/codepipeline/latest/userguide/update-github-action-connections.html)
