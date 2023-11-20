@@ -63,3 +63,21 @@ resource "aws_s3_bucket" "backend_pipeline_bucket" {
     Terraform = "true"
   }
 }
+
+resource "aws_s3_bucket_lifecycle_configuration" "backend_pipeline_lifecycle" {
+  bucket = aws_s3_bucket.backend_pipeline_bucket.id
+
+  rule {
+    id = "1-day-ttl"
+
+    filter {
+      prefix = "source_output"
+    }
+
+    expiration {
+      days = 1
+    }
+
+    status = "Enabled"
+  }
+}
