@@ -92,8 +92,7 @@ Also, CloudFront has a custom SSL certificate, instead of its default.
     - When a hosted zone is attached to a VPC, it means the hosted zone is private.
 1. Import SSL certificate to CloudFront
 
-    > [!IMPORTANT]
-    > The ACM certificate must to be in US East.
+    > The ACM certificate **must to** be in **US East**.
 
     - This documentation is very helpful: [Importing an SSL/TLS certificate to CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cnames-and-https-procedures.html#cnames-and-https-uploading-certificates)
     - If the `aws_cloudfront_distribution` resource use an ACM certificate, it **must have these two arguments declared**:
@@ -233,22 +232,23 @@ The CI/CD pipeline is composed by the following stages:
         - [CodeBuild Buildspec syntax?](https://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html#build-spec-ref-syntax)
         - How to generate multiple artifacts?
             <details>
-            ```
-            artifacts:
-                    files:
-                        - '**/*'
-                    secondary-artifacts:
-                        ArtifactGet:
-                            files:
-                                - 'getVisitorsCount.py'
-                            name: ArtifactGet
-                        ArtifactUpdate:
-                            files:
-                                - 'updateVisitorsCount.py'
-                            name: ArtifactUpdate
-            ```
 
             ```
+            #Codebuild buildspec.yml
+                artifacts:
+                        files:
+                            - '**/*'
+                        secondary-artifacts:
+                            ArtifactGet:
+                                files:
+                                    - 'getVisitorsCount.py'
+                                name: ArtifactGet
+                            ArtifactUpdate:
+                                files:
+                                    - 'updateVisitorsCount.py'
+                                name: ArtifactUpdate
+
+            #CodePipeline build stage
             stage {
                 name = "DeployAction"
                 action {
@@ -257,6 +257,7 @@ The CI/CD pipeline is composed by the following stages:
                 }       
             }
             ```
+
             </details>
 
 > This CodePipeline uses GitHub version 1 which is deprecated. As extra, I may update it to [v2](https://docs.aws.amazon.com/codepipeline/latest/userguide/update-github-action-connections.html)
