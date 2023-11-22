@@ -266,3 +266,31 @@ resource "aws_iam_role_policy" "attach_policy_codepipeline_role" {
     role   = aws_iam_role.custom_codepipeline_service_role.name
     policy = data.aws_iam_policy_document.codepipeline_service.json
 }
+
+######################################  GitHub FrontEnd Policy
+resource "aws_iam_policy" "frontend_s3_access" {
+    name        = "frontend-s3-access"
+    description = "Grant S3 access to CICD Frontend GitHub Actions"
+
+    policy = jsonencode({
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "s3:*"
+                ],
+                "Resource": [
+                    "${aws_s3_bucket.static_website.arn}",
+                    "${aws_s3_bucket.static_website.arn}/*"
+                ]
+            }
+        ]
+    })
+
+    tags = {
+        Name = "frontend-s3-access"
+        Project = "aws-cloud-resume-challenge"
+        Terraform = "true"
+    }
+}

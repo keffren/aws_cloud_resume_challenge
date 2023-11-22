@@ -208,9 +208,9 @@ A good practice is to avoid updating the back-end API and the front-end website 
 To achieve this, the project will be split in two repositories:
 
 - [The back-end](https://github.com/keffren/resume_challenge_backend)
-- [The front-end]()
+- [The front-end](https://github.com/keffren/resume_challenge_frontend)
 
-### 14. CI/CD Back-end
+### 14. CI/CD Back-End
 
 In this step, I am setting up a CI/CD pipeline to upload Python code into the Lambda functions using **AWS CodePipeline**, deviating from the challenge's recommendation. For the front-end, I will use GitHub Actions.
 
@@ -261,3 +261,25 @@ The CI/CD pipeline is composed by the following stages:
             </details>
 
 > This CodePipeline uses GitHub version 1 which is deprecated. As extra, I may update it to [v2](https://docs.aws.amazon.com/codepipeline/latest/userguide/update-github-action-connections.html)
+
+### 15. CI/CD Front-End
+
+It requires creating a second GitHub repository for the website code and setting up GitHub Actions so that when new website code is pushed, the S3 bucket automatically updates.
+
+> **GitHub Actions** is a continuous integration and continuous delivery (CI/CD) platform that automates build, test, and deployment pipelines. It can create workflows to build and test every pull request or deploy merged pull requests to production.
+
+The workflow for this CI/CD pipeline is as follows:
+
+- Checking the links within the repository using `Markdown link check`.
+- Verifying website availability and testing the views count functionality through an Integration test. This test uses:
+    - [Jest:](https://jestjs.io/docs/getting-started) a JavaScript framework for performing tests.
+    - [Puppiteer:](https://pptr.dev/)  a Node.js library automating browser operations.
+- Updating the front-end files in the AWS S3 bucket.
+    - It has its own AWS credentials as a Service Account, configured as secrets.
+    - This service account is attached to a custom policy granting S3 access to the web static bucket.
+
+The following documentation provides assistance in understanding and completing this step:
+
+- [Markdown link check](https://github.com/gaurav-nelson/github-action-markdown-link-check)
+- [GitHub Actions: Vars & Secrets](https://docs.github.com/en/actions/learn-github-actions/variables)
+- [GitHub Actions: Dependency between jobs](https://docs.github.com/en/actions/using-jobs/using-jobs-in-a-workflow#defining-prerequisite-jobs)
