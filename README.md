@@ -1,12 +1,16 @@
 # AWS CLOUD RESUME CHALLENGE
 
-Welcome to my AWS Cloud Resume Challenge repository! This project is the culmination of my journey to enhance my cloud computing skills and create a tangible demonstration of my abilities on Amazon Web Services (AWS). The AWS Cloud Resume Challenge is a hands-on initiative that allowed me to design and deploy my personal resume website using various AWS services.
+Welcome to my AWS Cloud Resume Challenge repository! This project is the culmination of my journey to enhance my cloud computing skills and create a tangible demonstration of my abilities on Amazon Web Services (AWS).
 
 ## What is the AWS Cloud Resume Challenge?
 
 The [AWS Cloud Resume Challenge](https://cloudresumechallenge.dev/docs/the-challenge/aws/) is not an official Amazon Web Services (AWS) program but rather a community-driven initiative designed to help individuals enhance their cloud computing skills and create a notable project to add to their resume. 
 
 It was created by [Forrest Brazeal](https://forrestbrazeal.com/), to encourage practical learning and showcase one's AWS expertise to potential employers.
+
+**Challenge Architecture:**
+
+![](/resources/challenge_architecture.png)
 
 The challenge typically involves creating a personal website or portfolio hosted on AWS, building infrastructure as code (IaC) to deploy and manage the website, integrating with AWS services like databases and storage, setting up continuous integration/continuous deployment (CI/CD) pipelines, and implementing monitoring and security best practices.
 
