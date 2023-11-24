@@ -267,7 +267,7 @@ resource "aws_iam_role_policy" "attach_policy_codepipeline_role" {
     policy = data.aws_iam_policy_document.codepipeline_service.json
 }
 
-######################################  GitHub FrontEnd Policy
+######################################  CI/CD Front-End
 resource "aws_iam_policy" "frontend_s3_access" {
     name        = "frontend-s3-access"
     description = "Grant S3 access to CICD Frontend GitHub Actions"
@@ -290,6 +290,65 @@ resource "aws_iam_policy" "frontend_s3_access" {
 
     tags = {
         Name = "frontend-s3-access"
+        Project = "aws-cloud-resume-challenge"
+        Terraform = "true"
+    }
+}
+
+resource "aws_iam_role" "frontend_cicd_role" {
+    name = "frontend-cicd-service-role"
+  
+    assume_role_policy = <<-EOF
+        {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Action": "sts:AssumeRoleWithWebIdentity",
+                    "Principal": {
+                        "Federated": "arn:aws:iam::${local.aws_account_number}:oidc-provider/token.actions.githubusercontent.com"
+                    },
+                    "Condition": {
+                        "StringEquals": {
+                            "token.actions.githubusercontent.com:aud": [
+                                "sts.amazonaws.com"
+                            ],
+                            "token.actions.githubusercontent.com:sub": [
+                                "repo:keffren/resume_challenge_frontend:ref:refs/heads/main"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    EOF
+
+    tags = {
+        Name = "frontend-cicd-service-role"
+        Project = "aws-cloud-resume-challenge"
+        Terraform = "true"
+    }
+}
+
+resource "aws_iam_role_policy_attachment" "frontend_cicd_role" {
+  role       = aws_iam_role.frontend_cicd_role.name
+  policy_arn = aws_iam_policy.frontend_s3_access.arn
+}
+
+resource "aws_iam_openid_connect_provider" "frontend_cicd_oidc" {
+
+    //The URL of the identity provider
+    url = "https://token.actions.githubusercontent.com"
+
+    // A list of client IDs (also known as audiences)
+    client_id_list = [
+        "sts.amazonaws.com"
+    ]
+
+    thumbprint_list = ["1b511abead59c6ce207077c0bf0e0043b1382612"]
+
+    tags = {
+        Name = "frontend-cicd-OIDC"
         Project = "aws-cloud-resume-challenge"
         Terraform = "true"
     }

@@ -282,8 +282,19 @@ The workflow for this CI/CD pipeline is as follows:
     - It has its own AWS credentials as a Service Account, configured as secrets.
     - This service account is attached to a custom policy granting S3 access to the web static bucket.
 
+I found [this post](https://dev.to/slsbytheodo/configure-authentication-to-your-aws-account-in-your-github-actions-ci-13p3) on the *dev.to* blog that explains how to configure AWS Authentication in your GitHub Actions CI.
+
+> **OpenID Connect (OIDC)** allows GitHub Actions workflows to access resources in Amazon Web Services (AWS), without needing to store the AWS credentials as long-lived GitHub secrets.
+
+By updating the workflows to use OIDC tokens, I can adopt the following good security practices:
+
+- **No cloud secrets:** You won't need to duplicate your cloud credentials as long-lived GitHub secrets. Instead, you can configure the OIDC trust on your cloud provider, and then update your workflows to request a short-lived access token from the cloud provider through OIDC.
+- **Authentication and authorization management:** You have more granular control over how workflows can use credentials, using your cloud provider's authentication (authN) and authorization (authZ) tools to control access to cloud resources.
+- **Rotating credentials:** With OIDC, your cloud provider issues a short-lived access token that is only valid for a single job, and then automatically expires.
+
 The following documentation provides assistance in understanding and completing this step:
 
 - [Markdown link check](https://github.com/gaurav-nelson/github-action-markdown-link-check)
 - [GitHub Actions: Vars & Secrets](https://docs.github.com/en/actions/learn-github-actions/variables)
 - [GitHub Actions: Dependency between jobs](https://docs.github.com/en/actions/using-jobs/using-jobs-in-a-workflow#defining-prerequisite-jobs)
+- [Configuring OpenID Connect in Amazon Web Services](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services)
