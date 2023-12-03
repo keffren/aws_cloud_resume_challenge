@@ -298,3 +298,48 @@ The following documentation provides assistance in understanding and completing 
 - [GitHub Actions: Vars & Secrets](https://docs.github.com/en/actions/learn-github-actions/variables)
 - [GitHub Actions: Dependency between jobs](https://docs.github.com/en/actions/using-jobs/using-jobs-in-a-workflow#defining-prerequisite-jobs)
 - [Configuring OpenID Connect in Amazon Web Services](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services)
+
+## Additional features
+
+### Terraform Best Practices
+
+I've been using Terraform state locally because I didn't want to increase my AWS free tier S3 usage. Once I have completed the challenge, I plan to implement best Terraform practices related to managing state files.
+
+> **What is terraform state?**
+Terraform state is a file that keeps track of the current configuration and state of your infrastructure managed by Terraform. It stores information about the resources provisioned, their attributes, dependencies, and relationships, enabling Terraform to understand what changes need to be made when you modify your infrastructure.
+
+**Best practice: store it remotely**
+
+- Storing Terraform state remotely ensures secure, concurrent access for teams, preventing conflicts. 
+- It safeguards sensitive data, enables locking to prevent corruption, and provides backup/recovery options for better reliability and accessibility across environments.
+ 
+To transition from using local state to remote state:
+
+1. Create a remote backend on AWS S3
+    - Enable bucket versioning.
+    - Disable public access.
+1. Update Terraform Configuration
+    - Declare [backend resource](https://developer.hashicorp.com/terraform/language/settings/backends/configuration) within terraform block.
+1. Migrate State
+    - Initialize terraform with `-migrate-state` flag. The `-migrate-state` option will attempt to copy existing state to the new backend.
+1. Verify & Test
+    - Delete `terraform.tfstate` and `terraform.tfstate.backup`
+    - Terraform plan output should indicate "No changes".
+
+**Best practice: locking remote state**
+
+- It prevents simultaneous modifications by multiple users, ensuring data integrity. 
+- It safeguards against conflicting changes and potential corruption of the state file when multiple users are working on the same infrastructure simultaneously. 
+- This helps maintain consistency and reliability in managing infrastructure configurations.
+
+How to lock terraform remote state:
+
+1. Create a dynamoDB table to store lock state
+    - It is important the **partition key must be `LockID`**
+1. Update backend block within terraform block
+    - Add the dynamoDB table as attribute
+1. Update terraform configuration
+    - Initialize terraform with `-reconfigure` flag. The `-reconfigure` option disregards any existing configuration, preventing migration of any existing state.
+1. Verify & Test
+    - Terraform plan output should indicate "No changes".
+    

@@ -1,3 +1,26 @@
+resource "aws_dynamodb_table" "terraform_state" {
+  name           = "resume-challenge-tf-state"
+
+  //By default the billing_mode is PROVISIONED
+  //If the billing_mode is PROVISIONED, read_capacity and write_capacity are required
+  billing_mode = "PROVISIONED"
+  read_capacity = 5
+  write_capacity = 5
+
+  hash_key       = "LockID"
+
+  attribute {
+    name = "LockID"
+    type = "S"
+  }
+
+  tags = {
+    Name = "resume-challenge-tf-state"
+    Project = "aws-cloud-resume-challenge"
+    Terraform = "true"
+  }
+}
+
 resource "aws_dynamodb_table" "visitor_counter" {
   name           = "resume-challenge-counter"
 

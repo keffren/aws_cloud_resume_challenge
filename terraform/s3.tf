@@ -1,3 +1,32 @@
+######################################  TERRAFORM BACK-END BUCKET
+resource "aws_s3_bucket" "resume_challenge_tf" {
+  bucket = "resume-challenge-terraform"
+
+  tags = {
+    Name = "resume-challenge-terraform"
+    Project = "aws-cloud-resume-challenge"
+    Terraform = "true"
+  }
+}
+
+
+resource "aws_s3_bucket_versioning" "resume_challenge_tf" {
+  bucket = aws_s3_bucket.resume_challenge_tf.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+# Disable Public Access
+resource "aws_s3_bucket_public_access_block" "resume_challenge_tf" {
+  bucket = aws_s3_bucket.resume_challenge_tf.id
+
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+}
+
 ######################################  STATIC WEBSITE BUCKET
 resource "aws_s3_bucket" "static_website" {
   bucket = "mateodev.cloud"

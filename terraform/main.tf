@@ -5,6 +5,12 @@ terraform {
       version = "~> 5.0"
     }
   }
+  backend "s3" {
+    bucket = "resume-challenge-terraform"
+    key = "terraform.tfstate"
+    region = "eu-west-1"
+    dynamodb_table = "resume-challenge-tf-state"
+  }
 }
 
 # Configure the AWS Provider
