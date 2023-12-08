@@ -68,8 +68,6 @@ The S3 website URL should use **HTTPS** for security which is one of the feature
 **What is Amazon CloudFront?**
 Amazon CloudFront is a content delivery network (CDN) service built for high performance, security, and developer convenience. It delivers the content through a worldwide network of data centers called edge locations.
 
-I have added a restriction location to the CloudFront distribution: a geographic whitelist for United Kingdom (GB) and Spain (ES).
-
 The static website endpoint, created using CloudFormation, is composed of : 
 - `CloudFront Distribution domain name` + `index.hml`
 
