@@ -82,6 +82,53 @@ resource "aws_s3_bucket_policy" "allow_public_access" {
     depends_on = [ aws_s3_bucket_public_access_block.allow_public_access]
 }
 
+######################################  STATIC WEBSITE BUCKET SERVER ACCESS LOGS
+resource "aws_s3_bucket" "static_website_logs" {
+  bucket = "mateodev.cloud-server-access-logs"
+
+  tags = {
+    Name = "mateodev.cloud-server-access-logs"
+    Project = "aws-cloud-resume-challenge"
+    Terraform = "true"
+  }
+}
+
+# Disable Public Access
+resource "aws_s3_bucket_public_access_block" "static_website_logs" {
+  bucket = aws_s3_bucket.static_website_logs.id
+
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+}
+
+# Enabling mateo.dev  bucket server access logs
+resource "aws_s3_bucket_logging" "static_website_logs" {
+  bucket = aws_s3_bucket.static_website.id
+
+  target_bucket = aws_s3_bucket.static_website_logs.id
+  target_prefix = "log/"
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "static_website_logs" {
+  bucket = aws_s3_bucket.static_website_logs.id
+
+  rule {
+    id = "1-day-ttl"
+
+    filter {
+      prefix = "log"
+    }
+
+    expiration {
+      days = 1
+    }
+
+    status = "Enabled"
+  }
+}
+
 ###################################### CODEPIPELINE BUCKET
 resource "aws_s3_bucket" "backend_pipeline_bucket" {
   bucket = "resume-challenge-backend-pipeline"

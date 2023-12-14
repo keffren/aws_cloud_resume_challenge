@@ -301,7 +301,10 @@ The following documentation provides assistance in understanding and completing 
 
 ### Terraform Best Practices
 
+<details>
+<summary>
 I've been using Terraform state locally because I didn't want to increase my AWS free tier S3 usage. Once I have completed the challenge, I plan to implement best Terraform practices related to managing state files.
+</summary>
 
 > **What is terraform state?**
 Terraform state is a file that keeps track of the current configuration and state of your infrastructure managed by Terraform. It stores information about the resources provisioned, their attributes, dependencies, and relationships, enabling Terraform to understand what changes need to be made when you modify your infrastructure.
@@ -340,4 +343,9 @@ How to lock terraform remote state:
     - Initialize terraform with `-reconfigure` flag. The `-reconfigure` option disregards any existing configuration, preventing migration of any existing state.
 1. Verify & Test
     - Terraform plan output should indicate "No changes".
-    
+
+</details>
+
+### Analyze the Web Static server access logs
+
+I have done this [aws lab](https://github.com/keffren/aws_labs/tree/main/hands_on_5) which analyzes the server access logs of S3 the web static using AWS Athena.
